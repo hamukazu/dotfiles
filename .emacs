@@ -6,10 +6,14 @@
 (setq truncate-partial-width-windows nil)
 (setq-default indent-tabs-mode nil)
 (set-language-environment "Japanese")
-(setq default-input-method "W32-IME")
 (require 'ruby-mode)
 (defun ruby-mode-set-encoding () ())
 
+;; set default coding system
+(set-default-coding-systems 'utf-8)
+
+;; for anthy
+(global-set-key [zenkaku-hankaku] 'toggle-input-method)
 ;;; 
 (setq load-path (cons "~/.emacs.d/plugins" load-path))
 (setq load-path (cons "~/.emacs.d/auto-install" load-path))
