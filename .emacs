@@ -134,9 +134,6 @@
 (setq load-path (cons "~/.emacs.d/plugins/ejacs" load-path))
 (autoload 'js-console "js-console" nil t)
 
-;;; anything
-(require 'anything-startup)
-
 ;;; auto-install
 ;(require 'auto-install)
 ;(setq auto-install-directory "~/.emacs.d/auto-install/")
@@ -153,10 +150,3 @@
     (load
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
-
-(set-face-attribute 'default nil
-        :family "‚l‚r ƒSƒVƒbƒN"
-        :height 90)
-(set-fontset-font "fontset-default"
-        'japanese-jisx0208
-        '("‚l‚r ƒSƒVƒbƒN" . "jisx0208-sjis"))
