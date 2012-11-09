@@ -9,6 +9,7 @@
 (require 'ruby-mode)
 (defun ruby-mode-set-encoding () ())
 
+
 ;; set default coding system
 (set-default-coding-systems 'utf-8)
 
@@ -19,6 +20,15 @@
 (setq load-path (cons "~/.emacs.d/auto-install" load-path))
 (setq load-path (cons "~/cabal/ghc-mod-1.10.12" load-path))
 (setq exec-path (cons "~/cabal/bin" exec-path))
+
+
+;; color theme
+(setq load-path (cons "~/.emacs.d/plugins/color-theme-6.6.0" load-path))
+(require 'color-theme)
+(eval-after-load "color-theme"
+  '(progn
+     (color-theme-initialize)
+     (color-theme-euphoria)))
 
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 ;;; Additional mode
@@ -116,7 +126,7 @@
 ;;; Screen size specific configuration
 
 (setq initial-frame-alist 
-      (append '((width . 100)
+      (append '((width . 85)
 		(height . 50)
 		(top . 0)
 		(left . 0)) initial-frame-alist))
