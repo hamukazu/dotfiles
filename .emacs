@@ -14,10 +14,17 @@
 (set-default-coding-systems 'utf-8)
 
 ;; for anthy
-(global-set-key [zenkaku-hankaku] 'toggle-input-method)
-;;; 
+;(load-library "anthy")
+;(setq default-input-method "japanese-anthy")
+;(global-set-key [zenkaku-hankaku] 'toggle-input-method)
+;; for mozc
+(require 'mozc)
+(setq default-input-method "japanese-mozc");;; 
 (setq load-path (cons "~/.emacs.d/plugins" load-path))
 (setq load-path (cons "~/.emacs.d/auto-install" load-path))
+(global-set-key (kbd "<zenkaku-hankaku>") 'toggle-input-method)
+
+;; for ghc
 (setq load-path (cons "~/cabal/ghc-mod-1.10.12" load-path))
 (setq exec-path (cons "~/cabal/bin" exec-path))
 
