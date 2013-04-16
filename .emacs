@@ -1,6 +1,6 @@
-;;; First of all...
-(global-font-lock-mode t)
+;;; First of all...(global-font-lock-mode t)
 (global-set-key (kbd "C-h") 'delete-backward-char)
+(global-set-key (kbd "C-; g") 'goto-line)
 (recentf-mode)
 (setq visible-bell t)
 (setq truncate-partial-width-windows nil)
@@ -12,6 +12,11 @@
 
 ;; set default coding system
 (set-default-coding-systems 'utf-8)
+
+
+;; evil-mode
+(setq load-path (cons "~/.emacs.d/plugins/evil-evil" load-path))
+(require 'evil)
 
 ;; for anthy
 ;(load-library "anthy")
@@ -134,9 +139,7 @@
 
 (setq initial-frame-alist 
       (append '((width . 85)
-		(height . 50)
-		(top . 0)
-		(left . 0)) initial-frame-alist))
+		(height . 50)) initial-frame-alist))
 ;(add-hook 'after-init-hook
 ;	  (lambda () (split-window-horizontally) 
 ;	    (other-window 0)))
