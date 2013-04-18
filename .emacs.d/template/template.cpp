@@ -1,0 +1,2 @@
+#include "%file-noext%.h"
+
