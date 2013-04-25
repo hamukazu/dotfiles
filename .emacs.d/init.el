@@ -71,3 +71,11 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 (autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+
+;;; Python mode
+(add-hook 'python-mode-hook 
+          (lambda () (local-set-key (kbd "C-h") 'python-backspace)))
+(add-hook 'python-mode-hook 
+          (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
+(add-hook 'python-mode-hook 
+          (lambda () (local-set-key (kbd "C-m") 'newline-and-indent)))
