@@ -1,5 +1,5 @@
 ;;; First of all...
-(global-set-key (kbd "C-h") 'delete-backward-char)
+(global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "C-; g") 'goto-line)
 (recentf-mode)
 (setq visible-bell t)
