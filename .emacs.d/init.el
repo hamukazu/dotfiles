@@ -1,6 +1,7 @@
 ;;; First of all...
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "C-; g") 'goto-line)
+(keyboard-translate ?\C-h ?\C-?)
 (recentf-mode)
 (setq visible-bell t)
 (setq truncate-partial-width-windows nil)
@@ -73,8 +74,6 @@
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
 ;;; Python mode
-(add-hook 'python-mode-hook 
-          (lambda () (local-set-key (kbd "C-h") 'python-backspace)))
 (add-hook 'python-mode-hook 
           (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 (add-hook 'python-mode-hook 
