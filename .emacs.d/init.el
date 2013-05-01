@@ -8,6 +8,7 @@
 (setq-default indent-tabs-mode nil)
 (set-default-coding-systems 'utf-8)
 (setq inhibit-startup-message t)
+(helm-mode t)
 
 ;; Packages
 (require 'package)
