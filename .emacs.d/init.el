@@ -67,7 +67,7 @@
 (add-hook 'cuda-mode-hook common-function-for-c-hook)
 
 ;;; Haskell-mode
-(load "haskell-site-file")
+;(load "haskell-site-file")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 (autoload 'ghc-init "ghc" nil t)
@@ -78,3 +78,5 @@
           (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 (add-hook 'python-mode-hook 
           (lambda () (local-set-key (kbd "C-m") 'newline-and-indent)))
+
+(setq js3-indent-level 2)
