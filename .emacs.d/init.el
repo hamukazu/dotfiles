@@ -80,3 +80,6 @@
           (lambda () (local-set-key (kbd "C-m") 'newline-and-indent)))
 
 (setq js3-indent-level 2)
+
+;; ess-mode
+(load "ess-site")
