@@ -95,3 +95,6 @@
 
 ;; ess-mode
 (load "ess-site")
+
+(require 'auto-complete-config)
+(ac-config-default)
