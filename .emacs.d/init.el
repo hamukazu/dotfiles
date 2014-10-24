@@ -74,10 +74,20 @@
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
 ;;; Python mode
+(defvar ac-source-pysmell
+  '((candidates
+     . (lambda ()
+         (require 'pysmell)
+         (pysmell-get-completions))))
+  "Source for PySmell")
 (add-hook 'python-mode-hook 
           (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 (add-hook 'python-mode-hook 
           (lambda () (local-set-key (kbd "C-m") 'newline-and-indent)))
+(add-hook 'python-mode-hook
+          '(lambda ()
+             (set (make-local-variable 'ac-sources)
+                  (append ac-sources '(ac-source-pysmell)))))
 
 ;;; js3 mode
 (add-hook 'js3-mode-hook
@@ -98,3 +108,5 @@
 
 (require 'auto-complete-config)
 (ac-config-default)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
