@@ -79,6 +79,10 @@
 (add-hook 'python-mode-hook 
           (lambda () (local-set-key (kbd "C-m") 'newline-and-indent)))
 
+;;; py-autopep8
+(require 'py-autopep8)
+(add-hook 'before-save-hook 'py-autopep8-before-save)
+
 ;;; js3 mode
 (add-hook 'js3-mode-hook
           (lambda () 
@@ -95,6 +99,9 @@
 
 ;; ess-mode
 (load "ess-site")
+
+;;; Yasnippet
+(yas-global-mode)
 
 (require 'auto-complete-config)
 (ac-config-default)
