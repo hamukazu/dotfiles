@@ -89,6 +89,10 @@
              (set (make-local-variable 'ac-sources)
                   (append ac-sources '(ac-source-pysmell)))))
 
+;;; py-autopep8
+(require 'py-autopep8)
+(add-hook 'before-save-hook 'py-autopep8-before-save)
+
 ;;; js3 mode
 (add-hook 'js3-mode-hook
           (lambda () 
@@ -105,6 +109,9 @@
 
 ;; ess-mode
 (load "ess-site")
+
+;;; Yasnippet
+(yas-global-mode)
 
 (require 'auto-complete-config)
 (ac-config-default)
