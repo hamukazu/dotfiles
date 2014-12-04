@@ -77,6 +77,11 @@
 (require 'py-autopep8)
 (add-hook 'before-save-hook 'py-autopep8-before-save)
 
+;;; pyflakes
+(add-hook 'python-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-; p") 'pyflakes)))
+
 ;;; js3 mode
 (add-hook 'js3-mode-hook
           (lambda ()
