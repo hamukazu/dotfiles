@@ -56,6 +56,15 @@
   (message "done."))
 (add-hook 'find-file-not-found-hooks 'auto-insert)
 
+;;; Yasnippet
+(yas-global-mode t)
+
+
+;;; Auto complete
+(require 'auto-complete-config)
+(ac-config-default)
+(global-auto-complete-mode t)
+
 ;;; C-mode
 
 (setq common-function-for-c-hook
@@ -73,6 +82,10 @@
 (autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d04e7e0db7cb9c6137a4e6d988d1794ba9078a64
 ;;; py-autopep8
 (require 'py-autopep8)
 (add-hook 'before-save-hook 'py-autopep8-before-save)
@@ -99,10 +112,5 @@
 ;; ess-mode
 (load "ess-site")
 
-;;; Yasnippet
-(yas-global-mode)
-
-(require 'auto-complete-config)
-(ac-config-default)
-
+;;; Deleting trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
