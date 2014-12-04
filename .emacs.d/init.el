@@ -82,10 +82,6 @@
 (autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
-<<<<<<< HEAD
-=======
-
->>>>>>> d04e7e0db7cb9c6137a4e6d988d1794ba9078a64
 ;;; py-autopep8
 (require 'py-autopep8)
 (add-hook 'before-save-hook 'py-autopep8-before-save)
