@@ -11,7 +11,7 @@
 
 ;; Packages
 (require 'package)
-(setq package-archives 
+(setq package-archives
       (append '(("marmalade" . "http://marmalade-repo.org/packages/")
                 ("melpa" . "http://melpa.milkbox.net/packages/"))
               package-archives))
@@ -29,21 +29,21 @@
      (color-theme-euphoria)))
 
 ;;; Screen size specific configuration
-(setq initial-frame-alist 
+(setq initial-frame-alist
       (append '((width . 85)
 		(height . 50)) initial-frame-alist))
 
 ;;; Template
 (require 'autoinsert)
 (setq auto-insert-directory "~/.emacs.d/template")
-(setq auto-insert-alist 
+(setq auto-insert-alist
       (append '(("\\.cpp$" . ["template.cpp" my-template])
                 ("\\.h$" . ["template.h" my-template]))))
 (defvar template-replacements-alists
   '(("%file%" . (lambda () (file-name-nondirectory (buffer-file-name))))
-    ("%file-noext%" . 
+    ("%file-noext%" .
      (lambda () (file-name-sans-extension (file-name-nondirectory (buffer-file-name)))))
-    ("%include-guard%" . 
+    ("%include-guard%" .
      (lambda () (format "%s_H_" (upcase (file-name-sans-extension (file-name-nondirectory buffer-file-name))))))))
 (defun my-template ()
   (time-stamp)
@@ -56,10 +56,19 @@
   (message "done."))
 (add-hook 'find-file-not-found-hooks 'auto-insert)
 
+;;; Yasnippet
+(yas-global-mode t)
+
+
+;;; Auto complete
+(require 'auto-complete-config)
+(ac-config-default)
+(global-auto-complete-mode t)
+
 ;;; C-mode
 
 (setq common-function-for-c-hook
-         (lambda () 
+         (lambda ()
            (local-set-key (kbd "C-; c") 'compile)
            (setq compile-command "./waf")))
 (add-hook 'c-mode-hook common-function-for-c-hook)
@@ -73,21 +82,6 @@
 (autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
-;;; Python mode
-(defvar ac-source-pysmell
-  '((candidates
-     . (lambda ()
-         (require 'pysmell)
-         (pysmell-get-completions))))
-  "Source for PySmell")
-(add-hook 'python-mode-hook 
-          (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
-(add-hook 'python-mode-hook 
-          (lambda () (local-set-key (kbd "C-m") 'newline-and-indent)))
-(add-hook 'python-mode-hook
-          '(lambda ()
-             (set (make-local-variable 'ac-sources)
-                  (append ac-sources '(ac-source-pysmell)))))
 
 ;;; py-autopep8
 (require 'py-autopep8)
@@ -95,7 +89,7 @@
 
 ;;; js3 mode
 (add-hook 'js3-mode-hook
-          (lambda () 
+          (lambda ()
             (setq js3-auto-indent-p t)
             (setq js3-curly-indent-offset 0)
             (setq js3-enter-indents-newline t)
@@ -110,10 +104,5 @@
 ;; ess-mode
 (load "ess-site")
 
-;;; Yasnippet
-(yas-global-mode)
-
-(require 'auto-complete-config)
-(ac-config-default)
-
+;;; Deleting trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
