@@ -9,6 +9,11 @@
 (set-default-coding-systems 'utf-8)
 (setq inhibit-startup-message t)
 
+;;; Screen size specific configuration
+(setq initial-frame-alist
+      (append '((width . 85)
+		(height . 50)) initial-frame-alist))
+
 ;; Packages
 (require 'package)
 (setq package-archives
@@ -28,10 +33,6 @@
      (color-theme-initialize)
      (color-theme-euphoria)))
 
-;;; Screen size specific configuration
-(setq initial-frame-alist
-      (append '((width . 85)
-		(height . 50)) initial-frame-alist))
 
 ;;; Template
 (require 'autoinsert)
@@ -82,14 +83,34 @@
 (autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
+;;; python-mode
+(add-hook 'python-mode-hook
+          (lambda ()
+            (define-key python-mode-map (kbd "\C-m") 'newline-and-indent)
+            (define-key python-mode-map (kbd "RET") 'newline-and-indent)))
+
 ;;; py-autopep8
 (require 'py-autopep8)
 (add-hook 'before-save-hook 'py-autopep8-before-save)
 
-;;; pyflakes
+;;; flymake
+(require 'tramp-cmds)
+(when (load "flymake" t)
+  (defun flymake-pyflakes-init ()
+     ; Make sure it's not a remote buffer or flymake would not work
+     (when (not (subsetp (list (current-buffer)) (tramp-list-remote-buffers)))
+      (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                         'flymake-create-temp-inplace))
+             (local-file (file-relative-name
+                          temp-file
+                          (file-name-directory buffer-file-name))))
+        (list "pyflakes" (list local-file)))))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.py\\'" flymake-pyflakes-init)))
 (add-hook 'python-mode-hook
           (lambda ()
-            (local-set-key (kbd "C-; p") 'pyflakes)))
+            (flymake-mode t)))
+
 
 ;;; js3 mode
 (add-hook 'js3-mode-hook
@@ -107,6 +128,3 @@
 
 ;; ess-mode
 (load "ess-site")
-
-;;; Deleting trailing whitespace
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
