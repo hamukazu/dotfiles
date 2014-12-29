@@ -9,11 +9,23 @@
 (set-default-coding-systems 'utf-8)
 (setq inhibit-startup-message t)
 
+;; installed packages:
+;; auto-complete color-theme flymake-cursor flycheck-pyflakes py-autopep8 js3-mode ess-mode yasnippet
+
 ;;; Screen size specific configuration
 (setq initial-frame-alist
       (append '((width . 85)
 		(height . 50)) initial-frame-alist))
 
+;; Platform specific settings
+(cond 
+  ((string-match "apple-darwin" system-configuration)
+   (define-key global-map [?¥] [?\\]))
+  ((string-match "linux" system-configuration)
+   (require 'mozc)
+   (setq default-input-method "japanese-mozc")))
+
+  
 ;; Packages
 (require 'package)
 (setq package-archives
@@ -21,10 +33,6 @@
                 ("melpa" . "http://melpa.milkbox.net/packages/"))
               package-archives))
 (package-initialize)
-
-;; for mozc
-(require 'mozc)
-(setq default-input-method "japanese-mozc")
 
 ;; color theme
 (require 'color-theme)
