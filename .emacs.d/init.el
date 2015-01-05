@@ -11,6 +11,7 @@
 
 ;; installed packages:
 ;; auto-complete color-theme flymake-cursor flycheck-pyflakes py-autopep8 js3-mode ess-mode yasnippet
+;;; Should also install pyflakes via pip
 
 ;;; Screen size specific configuration
 (setq initial-frame-alist
