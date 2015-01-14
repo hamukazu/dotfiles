@@ -9,9 +9,23 @@
 (set-default-coding-systems 'utf-8)
 (setq inhibit-startup-message t)
 
-;; installed packages:
-;; auto-complete color-theme flymake-cursor flycheck-pyflakes py-autopep8 js3-mode ess-mode yasnippet
+;; Packages
+(require 'package)
+(setq package-archives
+      (append '(("marmalade" . "http://marmalade-repo.org/packages/")
+                ("melpa" . "http://melpa.milkbox.net/packages/"))
+              package-archives))
+(package-initialize)
+
+;; Script to run initially in order to necessary packages
+(setq pkgs '
+      (auto-complete color-theme flymake-cursor 
+                     flycheck-pyflakes py-autopep8 js3-mode yasnippet))
+(dolist (p pkgs)
+  (when (not (require p nil 'noerror))
+    (package-install p)))
 ;;; Should also install pyflakes via pip
+
 
 ;;; Screen size specific configuration
 (setq initial-frame-alist
@@ -25,15 +39,7 @@
   ((string-match "linux" system-configuration)
    (require 'mozc)
    (setq default-input-method "japanese-mozc")))
-
   
-;; Packages
-(require 'package)
-(setq package-archives
-      (append '(("marmalade" . "http://marmalade-repo.org/packages/")
-                ("melpa" . "http://melpa.milkbox.net/packages/"))
-              package-archives))
-(package-initialize)
 
 ;; color theme
 (require 'color-theme)
@@ -135,5 +141,3 @@
             (setq js3-paren-indent-offset 2)
             (setq js3-square-indent-offset 4)))
 
-;; ess-mode
-(load "ess-site")
