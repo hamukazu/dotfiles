@@ -1,6 +1,7 @@
 ;;; First of all...
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "C-; g") 'goto-line)
+(global-set-key (kbd "M-SPC") 'set-mark-command)
 (keyboard-translate ?\C-h ?\C-?)
 (recentf-mode)
 (setq visible-bell t)
@@ -19,7 +20,7 @@
 
 ;; Script to run initially in order to necessary packages
 (setq pkgs '
-      (auto-complete color-theme flymake-cursor 
+      (auto-complete flymake-cursor color-theme-modern elpy
                      flycheck-pyflakes py-autopep8 js3-mode yasnippet))
 (dolist (p pkgs)
   (when (not (require p nil 'noerror))
@@ -32,6 +33,9 @@
       (append '((width . 85)
 		(height . 50)) initial-frame-alist))
 
+(setq custom-safe-themes t)
+(load-theme 'euphoria)
+
 ;; Platform specific settings
 (cond 
   ((string-match "apple-darwin" system-configuration)
@@ -39,15 +43,6 @@
   ((string-match "linux" system-configuration)
    (require 'mozc)
    (setq default-input-method "japanese-mozc")))
-  
-
-;; color theme
-(require 'color-theme)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-     (color-theme-euphoria)))
-
 
 ;;; Template
 (require 'autoinsert)
@@ -98,15 +93,15 @@
 (autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
-;;; python-mode
-(add-hook 'python-mode-hook
-          (lambda ()
-            (define-key python-mode-map (kbd "\C-m") 'newline-and-indent)
-            (define-key python-mode-map (kbd "RET") 'newline-and-indent)))
+;;; elpy
+(elpy-enable)
 
 ;;; py-autopep8
 (require 'py-autopep8)
-(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
+(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+(setq py-autopep8-options '("--ignore=E501"))
+; E501 - Try to make lines fit within --max-line-length characters.
+; E226 - Fix missing whitespace around arithmetic operator.
 
 ;;; flymake
 (require 'tramp-cmds)
@@ -122,10 +117,7 @@
         (list "pyflakes" (list local-file)))))
   (add-to-list 'flymake-allowed-file-name-masks
                '("\\.py\\'" flymake-pyflakes-init)))
-(add-hook 'python-mode-hook
-          (lambda ()
-            (flymake-mode t)))
-
+(add-hook 'elpy-mode-hook 'flymake-python-pyflakes-load)
 
 ;;; js3 mode
 (add-hook 'js3-mode-hook
@@ -141,3 +133,20 @@
             (setq js3-paren-indent-offset 2)
             (setq js3-square-indent-offset 4)))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("fe349b21bb978bb1f1f2db05bc87b2c6d02f1a7fe3f27584cd7b6fbf8e53391a" default)))
+ '(package-selected-packages
+   (quote
+    (yasnippet js3-mode py-autopep8 flycheck-pyflakes flymake-cursor auto-complete))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
