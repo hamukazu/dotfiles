@@ -1,4 +1,6 @@
 ;;; First of all...
+(when load-file-name
+  (setq user-emacs-directory (file-name-directory load-file-name)))
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "C-; g") 'goto-line)
 (global-set-key (kbd "M-SPC") 'set-mark-command)
@@ -10,23 +12,27 @@
 (set-default-coding-systems 'utf-8)
 (setq inhibit-startup-message t)
 
-;; Packages
-(require 'package)
-(setq package-archives
-      (append '(("marmalade" . "http://marmalade-repo.org/packages/")
-                ("melpa" . "http://melpa.milkbox.net/packages/"))
-              package-archives))
-(package-initialize)
+;; Package management
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 
-;; Script to run initially in order to necessary packages
-(setq pkgs '
-      (auto-complete flymake-cursor color-theme-modern elpy
-                     flycheck-pyflakes py-autopep8 js3-mode yasnippet))
-(dolist (p pkgs)
-  (when (not (require p nil 'noerror))
-    (package-install p)))
-;;; Should also install pyflakes via pip
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
 
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(el-get 'sync)
+
+(el-get-bundle auto-complete)
+(el-get-bundle flymake-cursor)
+(el-get-bundle color-theme-modern)
+(el-get-bundle elpy)
+(el-get-bundle flycheck)
+(el-get-bundle py-autopep8)
+(el-get-bundle js3-mode)
+(el-get-bundle yasnippet)
 
 ;;; Screen size specific configuration
 (setq initial-frame-alist
