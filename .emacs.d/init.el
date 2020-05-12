@@ -26,11 +26,11 @@
 (el-get 'sync)
 
 (el-get-bundle auto-complete)
+(el-get-bundle jedi)
+(el-get-bundle rope)
 (el-get-bundle flymake-cursor)
-(el-get-bundle color-theme-modern)
 (el-get-bundle elpy)
 (el-get-bundle flycheck)
-(el-get-bundle py-autopep8)
 (el-get-bundle js3-mode)
 (el-get-bundle yasnippet)
 
@@ -40,7 +40,7 @@
 		(height . 50)) initial-frame-alist))
 
 (setq custom-safe-themes t)
-(load-theme 'euphoria)
+(load-theme 'wheatgrass)
 
 ;; Platform specific settings
 (cond 
@@ -99,31 +99,17 @@
 (autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
+
 ;;; elpy
 (elpy-enable)
+(setq elpy-rpc-virtualenv-path "~/.pyenv/versions/elpy")
+(add-hook 'elpy-mode-hook
+          '(lambda ()
+             (when (eq major-mode 'python-mode)
+               (prog1
+                   (add-hook 'before-save-hook 'elpy-black-fix-code nil t)))))
 
-;;; py-autopep8
-(require 'py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-(setq py-autopep8-options '("--ignore=E501"))
-; E501 - Try to make lines fit within --max-line-length characters.
-; E226 - Fix missing whitespace around arithmetic operator.
-
-;;; flymake
 (require 'tramp-cmds)
-(when (load "flymake" t)
-  (defun flymake-pyflakes-init ()
-     ; Make sure it's not a remote buffer or flymake would not work
-     (when (not (subsetp (list (current-buffer)) (tramp-list-remote-buffers)))
-      (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                         'flymake-create-temp-inplace))
-             (local-file (file-relative-name
-                          temp-file
-                          (file-name-directory buffer-file-name))))
-        (list "pyflakes" (list local-file)))))
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.py\\'" flymake-pyflakes-init)))
-(add-hook 'elpy-mode-hook 'flymake-python-pyflakes-load)
 
 ;;; js3 mode
 (add-hook 'js3-mode-hook
