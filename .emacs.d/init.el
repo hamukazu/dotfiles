@@ -13,26 +13,31 @@
 (setq inhibit-startup-message t)
 
 ;; Package management
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-(el-get 'sync)
+;(use-package init-loader)
 
-(el-get-bundle auto-complete)
-(el-get-bundle jedi)
-(el-get-bundle rope)
-(el-get-bundle flymake-cursor)
-(el-get-bundle elpy)
-(el-get-bundle flycheck)
-(el-get-bundle js3-mode)
-(el-get-bundle yasnippet)
+(use-package jedi)
+(use-package flymake-cursor)
+(use-package elpy)
+(use-package flycheck)
+(use-package js3-mode)
+(use-package yasnippet)
+(use-package cider)
 
 ;;; Screen size specific configuration
 (setq initial-frame-alist
@@ -74,8 +79,8 @@
 (add-hook 'find-file-not-found-hooks 'auto-insert)
 
 ;;; Yasnippet
+(require 'yasnippet)
 (yas-global-mode t)
-
 
 ;;; Auto complete
 (require 'auto-complete-config)
@@ -125,20 +130,3 @@
             (setq js3-paren-indent-offset 2)
             (setq js3-square-indent-offset 4)))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("fe349b21bb978bb1f1f2db05bc87b2c6d02f1a7fe3f27584cd7b6fbf8e53391a" default)))
- '(package-selected-packages
-   (quote
-    (yasnippet js3-mode py-autopep8 flycheck-pyflakes flymake-cursor auto-complete))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
