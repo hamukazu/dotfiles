@@ -13,6 +13,9 @@
 (setq inhibit-startup-message t)
 
 ;; Package management
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -28,16 +31,10 @@
 
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
+(package-initialize)
 
 ;(use-package init-loader)
 
-(use-package jedi)
-(use-package flymake-cursor)
-(use-package elpy)
-(use-package flycheck)
-(use-package js3-mode)
-(use-package yasnippet)
-(use-package cider)
 
 ;;; Screen size specific configuration
 (setq initial-frame-alist
@@ -79,16 +76,15 @@
 (add-hook 'find-file-not-found-hooks 'auto-insert)
 
 ;;; Yasnippet
-(require 'yasnippet)
-(yas-global-mode t)
+(use-package yasnippet
+  :straight t
+  :init
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
+  (use-package yasnippet-snippets))
+    
 
-;;; Auto complete
-(require 'auto-complete-config)
-(ac-config-default)
-(global-auto-complete-mode t)
 
 ;;; C-mode
-
 (setq common-function-for-c-hook
          (lambda ()
            (local-set-key (kbd "C-; c") 'compile)
@@ -98,35 +94,46 @@
 (add-hook 'cuda-mode-hook common-function-for-c-hook)
 
 ;;; Haskell-mode
-;(load "haskell-site-file")
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-(autoload 'ghc-init "ghc" nil t)
-(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+(use-package haskell-mode
+  :straight t
+  :init
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+  (autoload 'ghc-init "ghc" nil t)
+  (add-hook 'haskell-mode-hook (lambda () (ghc-init))))
 
 
 ;;; elpy
-(elpy-enable)
-(setq elpy-rpc-virtualenv-path "~/.pyenv/versions/elpy")
-(add-hook 'elpy-mode-hook
-          '(lambda ()
-             (when (eq major-mode 'python-mode)
-               (prog1
-                   (add-hook 'before-save-hook 'elpy-black-fix-code nil t)))))
+(use-package pyvenv
+  :straight t)
 
-(require 'tramp-cmds)
+(use-package elpy
+  :straight t
+  :init
+  (setq elpy-modules '(elpy-module-company
+                       elpy-module-eldoc
+                       elpy-module-flymake
+                       elpy-module-pyvenv
+                       elpy-module-yasnippet
+                       elpy-module-sane-defaults))
+  (add-hook 'elpy-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook 'elpy-black-fix-code nil t)))
+  (setq elpy-rpc-virtualenv-path "~/.pyenv/versions/elpy")
+  (elpy-enable))
 
-;;; js3 mode
-(add-hook 'js3-mode-hook
-          (lambda ()
-            (setq js3-auto-indent-p t)
-            (setq js3-curly-indent-offset 0)
-            (setq js3-enter-indents-newline t)
-            (setq js3-expr-indent-offset 2)
-            (setq js3-indent-on-enter-key t)
-            (setq js3-lazy-commas t)
-            (setq js3-lazy-dots t)
-            (setq js3-lazy-operators t)
-            (setq js3-paren-indent-offset 2)
-            (setq js3-square-indent-offset 4)))
+;; latex
+(setq tex-default-mode 'latex-mode)
+(setq tex-start-commands "")
+(setq tex-print-file-extension ".pdf")
+(setq latex-run-command "lualatex")
+(setq tex-dvi-view-command "open")
+
+(use-package jedi)
+(use-package flymake-cursor)
+(use-package elpy)
+(use-package flycheck)
+(use-package js2-mode)
+(use-package cider)
+(use-package tramp)
 
