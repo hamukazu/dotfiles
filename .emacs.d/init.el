@@ -13,9 +13,6 @@
 (setq inhibit-startup-message t)
 
 ;; Package management
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
