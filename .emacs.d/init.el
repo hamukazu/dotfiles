@@ -1,4 +1,4 @@
-;;; First of all...
+`;;; First of all...
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
@@ -30,8 +30,10 @@
 (setq straight-use-package-by-default t)
 (package-initialize)
 
-;(use-package init-loader)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
 
+;(use-package init-loader)
 
 ;;; Screen size specific configuration
 (setq initial-frame-alist
@@ -133,4 +135,8 @@
 (use-package js2-mode)
 (use-package cider)
 (use-package tramp)
-
+(use-package rust-mode)
+(use-package lsp-mode)
+(use-package lsp-ui)
+(use-package cargo)
+(use-package treemacs)
