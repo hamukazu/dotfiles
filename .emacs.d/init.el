@@ -128,6 +128,25 @@
 (setq latex-run-command "lualatex")
 (setq tex-dvi-view-command "open")
 
+;; simple-httpd
+(use-package simple-httpd
+  :ensure t
+  :config
+  (setq httpd-port 7070))
+  
+;; impatient-mode for markdown
+(use-package impatient-mode)
+(defun markdown-html (buffer)
+  (princ (with-current-buffer buffer
+    (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s  </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
+         (current-buffer)))
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (impatient-mode)
+            (imp-set-user-filter 'markdown-html)
+            (unless (process-status "httpd")
+              (httpd-start))))
+
 (use-package jedi)
 (use-package flymake-cursor)
 (use-package elpy)
@@ -140,3 +159,5 @@
 (use-package lsp-ui)
 (use-package cargo)
 (use-package treemacs)
+(use-package ruby-mode)
+(use-package projectile-rails)
