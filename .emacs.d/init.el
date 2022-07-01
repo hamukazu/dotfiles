@@ -1,4 +1,4 @@
-`;;; First of all...
+;;; First of all...
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
@@ -33,7 +33,22 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 
-;(use-package init-loader)
+;; Packages
+(use-package jedi)
+(use-package flymake-cursor)
+(use-package elpy)
+(use-package flycheck)
+(use-package js2-mode)
+(use-package cider)
+(use-package tramp)
+(use-package rust-mode)
+(use-package flycheck-rust)
+(use-package lsp-mode)
+(use-package lsp-ui)
+(use-package cargo)
+(use-package treemacs)
+(use-package ruby-mode)
+(use-package projectile-rails)
 
 ;;; Screen size specific configuration
 (setq initial-frame-alist
@@ -147,17 +162,8 @@
             (unless (process-status "httpd")
               (httpd-start))))
 
-(use-package jedi)
-(use-package flymake-cursor)
-(use-package elpy)
-(use-package flycheck)
-(use-package js2-mode)
-(use-package cider)
-(use-package tramp)
-(use-package rust-mode)
-(use-package lsp-mode)
-(use-package lsp-ui)
-(use-package cargo)
-(use-package treemacs)
-(use-package ruby-mode)
-(use-package projectile-rails)
+
+(add-hook 'rust-mode-hook (lambda ()
+                            (flycheck-rust-setup)
+                            (lsp)
+                            (flycheck-mode)))
