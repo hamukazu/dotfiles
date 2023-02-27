@@ -43,12 +43,29 @@
 (use-package tramp)
 (use-package rust-mode)
 (use-package flycheck-rust)
-(use-package lsp-mode)
-(use-package lsp-ui)
+
 (use-package cargo)
 (use-package treemacs)
 (use-package ruby-mode)
 (use-package projectile-rails)
+(use-package typescript-mode)
+(use-package web-mode)
+(use-package yaml-mode)
+(use-package dockerfile-mode)
+
+(use-package company)
+(use-package tide)
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode)
+  (tide-hl-identifier-mode)
+  (company-mode))
+(add-hook 'typescript-mode-hook 'setup-tide-mode)
+
+(use-package company-auctex)
 
 ;;; Screen size specific configuration
 (setq initial-frame-alist
@@ -163,7 +180,9 @@
               (httpd-start))))
 
 
+(setq lsp-rust-server 'rust-analyzer)
 (add-hook 'rust-mode-hook (lambda ()
                             (flycheck-rust-setup)
                             (lsp)
                             (flycheck-mode)))
+
